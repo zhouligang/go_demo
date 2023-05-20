@@ -1,0 +1,45 @@
+basePath: /api/v1/
+definitions:
+  models.ParamsSignUp:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      repassword:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - repassword
+    - username
+    type: object
+host: 127.0.0.1
+info:
+  contact:
+    email: 1013269096@qq.com
+    name: 八宝糖
+  description: GinWeb脚手架项目
+  title: GinWeb脚手架项目
+  version: v1.0.0
+paths:
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册
+      parameters:
+      - description: 注册所需参数
+        in: body
+        name: object
+        schema:
+          $ref: '#/definitions/models.ParamsSignUp'
+      produces:
+      - application/json
+      responses: {}
+      summary: 用户注册
+      tags:
+      - 用户相关接口
+swagger: "2.0"

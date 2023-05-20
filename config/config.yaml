@@ -1,0 +1,25 @@
+name: "gin-web-scaffolding"
+mode: "dev"
+port: 80
+version: "v1.0.0"
+start_time: "2023-05-20"
+machine_id: 1
+
+auth:
+  jwt_expire: 7200 # 两个小时
+
+log:
+  level: "debug"
+  filename: "gin_web_scaffolding.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "123123"
+  dbname: "gin_web_scaffolding"
+  max_open_connections: 20
+  max_idle_connections: 10

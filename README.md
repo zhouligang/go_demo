@@ -4,14 +4,34 @@
 基于go语言的gin web框架实现的web开发的脚手架。认证使用jwt，数据库操作使用gorm、限流使用令牌桶等
 
 #### 软件架构
-软件架构说明
+软件各模块代码说明
 
+1. main.go 程序的主入口
+2. config 存放程序的配置文件信息
+3. settings 读取配置文件中的信息
+4. routes 注册的路由信息
+5. middlewares 存放自定义中间件代码
+6. utils 存放一些公共方法
+7. models 存放数据库模型结构体、返回或请求参数的结构体等
+8. logger 自定义的日志处理方法
+9. controller 控制层代码，客户端请求后的处理函数
+10. logic 逻辑层代码，处理具体的业务逻辑
+11. dao 对数据库进行处理的代码
+12. sqls 存放一些sql语句代码
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+go代码热监听
+1. go get -u github.com/cosmtrek/air
+2. 编译：go build
+3. 将编译后的ari拷贝到GOPATH/bin下
+
+生成api文档
+1. go get -u github.com/swaggo/gin-swagger
+2. go get -u github.com/swaggo/swag
+3. 编译：进入cmd目录，执行go build
+4. 将编译后的swag拷贝到GOPATH/bin下
+5. go get -u github.com/swaggo/files
 
 #### 使用说明
 
