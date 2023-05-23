@@ -5,4 +5,8 @@ package controller
 // @contact   : 1013269096@qq.com
 // -------------------------------------------
 
-const ContextUserIDKey = "userID"
+const (
+	ContextUserIDKey    = "userID"
+	ContextAccessToken  = "accessToken"
+	ContextRefreshToken = "refreshToken"
+)

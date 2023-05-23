@@ -8,5 +8,6 @@ import "errors"
 // -------------------------------------------
 
 var (
-	ErrorUserExist = errors.New("用户已存在")
+	ErrorUserExist     = errors.New("用户已存在")
+	ErrorUserNotExists = errors.New("用户未注册")
 )

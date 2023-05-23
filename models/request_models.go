@@ -16,3 +16,12 @@ type ParamsLogin struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
+
+// SelectUser 查询相关用户信息的结构体
+type SelectUser struct {
+	UserID       int64
+	Username     string
+	Password     string
+	AccessToken  string
+	RefreshToken string
+}

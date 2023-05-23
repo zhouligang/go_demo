@@ -33,3 +33,16 @@ func InsertUser(user *models.User) error {
 	result := db.Create(user)
 	return result.Error
 }
+
+func Login(user *models.SelectUser) (err error) {
+	u := &models.User{}
+	result := db.Where("username=? and password=?", user.Username, encryptPassword(user.Password)).Find(u)
+	if result.RowsAffected == 0 {
+		return ErrorUserNotExists
+	} else if result.RowsAffected != 1 {
+		return result.Error
+	} else {
+		user.UserID = u.UserID
+	}
+	return
+}

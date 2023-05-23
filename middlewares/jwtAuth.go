@@ -27,23 +27,29 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		}
 
 		// 按空格分割
-		parts := strings.SplitN(authHeader, " ", 2)
-		if !(len(parts) == 2 && parts[0] == "Bearer") {
+		parts := strings.SplitN(authHeader, " ", 3)
+		if !(len(parts) == 3 && parts[0] == "Bearer") {
 			controller.ResponseError(context, controller.CodeInvalidToken)
 			context.Abort()
 			return
 		}
 
 		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
-		mc, err := utils.ParseJWTToken(parts[1])
+		_, err := utils.ParseJWTToken(parts[1])
 		if err != nil {
-			controller.ResponseError(context, controller.CodeInvalidToken)
-			context.Abort()
-			return
+			parts[1], parts[2], err = utils.RefreshToken(parts[1], parts[2])
+			if err != nil {
+				controller.ResponseError(context, controller.CodeInvalidToken)
+				context.Abort()
+				return
+			}
 		}
+		mc, _ := utils.ParseJWTToken(parts[1])
 
 		// 将当前请求的username信息保存到请求的上下文context中
-		context.Set(controller.ContextUserIDKey, mc.UserID)
+		context.Set(controller.ContextUserIDKey, mc.Username)
+		context.Set(controller.ContextAccessToken, parts[1])
+		context.Set(controller.ContextRefreshToken, parts[2])
 		context.Next()
 	}
 }

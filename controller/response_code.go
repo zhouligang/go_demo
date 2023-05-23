@@ -16,16 +16,18 @@ const (
 	CodeNeedLogin
 	CodeInvalidToken
 	CodeUserExist
+	CodeUserNotExists
 )
 
 var CodeMsgMap = map[ResponseCode]string{
-	CodeSuccess:      "success",
-	CodeInvalidParam: "请求参数错误",
-	CodeServerBusy:   "服务繁忙",
-	CodeRateLimit:    "访问请求被限制",
-	CodeNeedLogin:    "需要登录",
-	CodeInvalidToken: "无效的Token",
-	CodeUserExist:    "用户已存在",
+	CodeSuccess:       "success",
+	CodeInvalidParam:  "请求参数错误",
+	CodeServerBusy:    "服务繁忙",
+	CodeRateLimit:     "访问请求被限制",
+	CodeNeedLogin:     "需要登录",
+	CodeInvalidToken:  "无效的Token",
+	CodeUserExist:     "用户已存在",
+	CodeUserNotExists: "用户尚未注册",
 }
 
 func (c ResponseCode) Msg() string {

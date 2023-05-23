@@ -25,25 +25,32 @@ type MyClaims struct {
 	jwt.StandardClaims
 }
 
-// GenToken 生成jwt token
-func GenJWTToken(userID int64, username string) (string, error) {
+// GenJWTToken 生成jwt token
+func GenJWTToken(userID int64, username string) (accessToken, refreshToken string, err error) {
 	// 创建一个我们自己声明的数据
 	c := MyClaims{
 		UserID:   userID,
 		Username: username,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Duration(settings.Conf.JwtExpire)).Unix(), // 过期时间
-			Issuer:    settings.Conf.Name,                                            //签发人
+			ExpiresAt: time.Now().Add(time.Duration(settings.Conf.JwtExpire) * time.Second).Unix(), // 过期时间
+			Issuer:    settings.Conf.Name,                                                          //签发人
 		},
 	}
 
 	// 使用指定的签名方法创建签名对象
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
 	// 使用指定的secret签名并获得完成的编码后的字符串token
-	return token.SignedString(mySecret)
+
+	accessToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, c).SignedString(mySecret)
+
+	// refresh token中不需要存任何自定义数据
+	refreshToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(time.Hour * 24 * 7).Unix(), //过期时间，设置为7天
+		Issuer:    settings.Conf.Name,
+	}).SignedString(mySecret)
+	return
 }
 
-// ParseToken 解析jwt token
+// ParseJWTToken 解析jwt token
 func ParseJWTToken(tokenString string) (*MyClaims, error) {
 	// 解析token
 	var mc = new(MyClaims)
@@ -57,4 +64,28 @@ func ParseJWTToken(tokenString string) (*MyClaims, error) {
 		return mc, nil
 	}
 	return nil, errors.New("invalid token")
+}
+
+// RefreshToken 刷新AccessToken
+func RefreshToken(accessToken, refreshToken string) (newAccessToken, newRefreshToken string, err error) {
+	_, err = jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
+		return mySecret, nil
+	})
+	if err != nil {
+		return
+	}
+
+	// 从旧的accessToken中解析出claims数据
+	var claims MyClaims
+	_, err = jwt.ParseWithClaims(accessToken, &claims, func(token *jwt.Token) (interface{}, error) {
+		return mySecret, nil
+	})
+
+	v, _ := err.(*jwt.ValidationError) // 进行类型转换
+
+	// 当accessToken是过期错误，并且refreshToken没有过期时就创建一个新的accessToken
+	if v.Errors == jwt.ValidationErrorExpired {
+		return GenJWTToken(claims.UserID, claims.Username)
+	}
+	return
 }

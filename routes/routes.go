@@ -36,6 +36,11 @@ func SetupRoutes(mode string) *gin.Engine {
 	//对后续的路由使用中间件
 	v1.Use(middlewares.JWTAuthMiddleware())
 
+	// 测试接口，在页面上显示当前登录的用户名
+	v1.GET("/test", func(context *gin.Context) {
+		context.String(http.StatusOK, "test")
+	})
+
 	router.GET("/swagger/*ang", gs.WrapHandler(swaggerFiles.Handler))
 	router.NoRoute(func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
