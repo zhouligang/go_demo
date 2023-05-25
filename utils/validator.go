@@ -22,10 +22,10 @@ import (
 
 // 对validator进行定制
 
-// 定义一个全局的翻译器
+// ValidatorTrans 定义一个全局的翻译器
 var ValidatorTrans ut.Translator
 
-// InitTrans 初始化
+// InitValidatorTrans 初始化
 func InitValidatorTrans(locale string) (err error) {
 	// 修改gin框架中的Validator引擎属性，实现自定制
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
@@ -67,7 +67,7 @@ func InitValidatorTrans(locale string) (err error) {
 	return
 }
 
-// 去除提示信息中的结构体名称
+// RemoveTopStruct 去除提示信息中的结构体名称
 // "ParamSignUp.repassword": "repassword为必填字段" ==> "repassword": "repassword为必填字段"
 func RemoveTopStruct(fields map[string]string) map[string]string {
 	res := map[string]string{}

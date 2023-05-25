@@ -17,13 +17,18 @@ import (
 // @contact   : 1013269096@qq.com
 // -------------------------------------------
 
+// SetupRoutes 设置路由
 func SetupRoutes(mode string) *gin.Engine {
 	if mode == gin.ReleaseMode {
 		gin.SetMode(gin.ReleaseMode) // 设置为release模式
 	}
 	router := gin.New()
-	//  使用自定义的两个中间件
-	router.Use(middlewares.GinLogger(), middlewares.GinRecovery(true), middlewares.RateLimitMiddleware(2, 5))
+	//  使用自定义的三个中间件
+	router.Use(
+		middlewares.GinLogger(),
+		middlewares.GinRecovery(true),
+		middlewares.RateLimitMiddleware(2, 5),
+	)
 
 	//  定义路由组
 	v1 := router.Group("/api/v1")
@@ -33,14 +38,12 @@ func SetupRoutes(mode string) *gin.Engine {
 	// 登录
 	v1.POST("/login", controller.LoginHandler)
 
-	//对后续的路由使用中间件
+	//对后续的路由使用中间件，用于用户鉴权
 	v1.Use(middlewares.JWTAuthMiddleware())
 
 	// 测试接口，在页面上显示当前登录的用户名
-	v1.GET("/test", func(context *gin.Context) {
-		context.String(http.StatusOK, "test")
-	})
-
+	v1.GET("/test", controller.TestHandle)
+	// swagger接口文档
 	router.GET("/swagger/*ang", gs.WrapHandler(swaggerFiles.Handler))
 	router.NoRoute(func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{

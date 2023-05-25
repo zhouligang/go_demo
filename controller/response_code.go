@@ -30,6 +30,7 @@ var CodeMsgMap = map[ResponseCode]string{
 	CodeUserNotExists: "用户尚未注册",
 }
 
+// Msg 为ResponseCode定义了一个方法，返回状态码对应的具体信息
 func (c ResponseCode) Msg() string {
 	msg, ok := CodeMsgMap[c]
 	if !ok {

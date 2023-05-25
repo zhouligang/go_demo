@@ -1,11 +1,20 @@
 # GinWeb脚手架
 
 #### 介绍
-基于go语言的gin web框架实现的web开发的脚手架。认证使用jwt，数据库操作使用gorm、限流使用令牌桶等
+基于go语言的gin web框架实现的web开发的脚手架。
+
+###### 使用到的主要技术点
+1. 认证使用jwt，双token模式
+2. 数据库操作使用gorm
+3. 限流使用令牌桶
+4. 用户id生成使用的数雪花算法
+5. 日志管理使用zap
+6. 配置文件管理使用viper
+7. 代码热监听使用air
+8. 接口文档生成使用swagger
 
 #### 软件架构
 软件各模块代码说明
-
 1. main.go 程序的主入口
 2. config 存放程序的配置文件信息
 3. settings 读取配置文件中的信息
@@ -27,17 +36,17 @@ go代码热监听
 3. 将编译后的ari拷贝到GOPATH/bin下
 
 生成api文档
-1. go get -u github.com/swaggo/gin-swagger
-2. go get -u github.com/swaggo/swag
+1. ```bash go get -u github.com/swaggo/gin-swagger```
+2. ```bash go get -u github.com/swaggo/swag```
 3. 编译：进入cmd目录，执行go build
 4. 将编译后的swag拷贝到GOPATH/bin下
-5. go get -u github.com/swaggo/files
+5. ```bash go get -u github.com/swaggo/files```
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  ```bash go mod tidy```
+2.  ```bash go run main.go```
+3. 使用postman对结果进行测试
 
 #### 参与贡献
 

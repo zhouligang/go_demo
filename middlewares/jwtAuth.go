@@ -27,6 +27,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		}
 
 		// 按空格分割
+		// 第一段是Bearer，第二段是accessToken，第三段是refreshToken
 		parts := strings.SplitN(authHeader, " ", 3)
 		if !(len(parts) == 3 && parts[0] == "Bearer") {
 			controller.ResponseError(context, controller.CodeInvalidToken)
@@ -34,20 +35,28 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
-		_, err := utils.ParseJWTToken(parts[1])
+		// 先验证一下accessToken是否有效，有效则不重新生成token
+		cClaims, err := utils.ParseJWTToken(parts[1])
 		if err != nil {
+			// 在RefreshToken中验证accessToken和refreshToken是否有效
+			// 如果accessToken过期，则重新生成accessToken和refreshToken
 			parts[1], parts[2], err = utils.RefreshToken(parts[1], parts[2])
 			if err != nil {
 				controller.ResponseError(context, controller.CodeInvalidToken)
 				context.Abort()
 				return
 			}
+			// parts[1]是得到的新的accessToken，我们使用之前定义好的解析JWT的函数来解析它
+			cClaims, err = utils.ParseJWTToken(parts[1])
 		}
-		mc, _ := utils.ParseJWTToken(parts[1])
+		if err != nil {
+			controller.ResponseError(context, controller.CodeInvalidToken)
+			context.Abort()
+			return
+		}
 
 		// 将当前请求的username信息保存到请求的上下文context中
-		context.Set(controller.ContextUserIDKey, mc.Username)
+		context.Set(controller.ContextUserIDKey, cClaims.Username)
 		context.Set(controller.ContextAccessToken, parts[1])
 		context.Set(controller.ContextRefreshToken, parts[2])
 		context.Next()

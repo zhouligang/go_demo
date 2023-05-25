@@ -44,7 +44,7 @@ func Login(p *models.ParamsLogin) (user *models.SelectUser, err error) {
 	if err != nil {
 		return nil, err
 	}
-	// 生成JWT token
+	// 生成JWT token，包括accessToken和refreshToken
 	accessToken, refreshToken, err := utils.GenJWTToken(user.UserID, user.Username)
 	if err != nil {
 		return nil, err

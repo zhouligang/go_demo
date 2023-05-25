@@ -31,10 +31,10 @@ func SignUpHandler(context *gin.Context) {
 	var pUser = new(models.ParamsSignUp)
 	if err := context.ShouldBindJSON(pUser); err != nil {
 		zap.L().Error("SignUp with invalid params", zap.Error(err))
-		// 获取validator.ValidationErrors类型的errors
+		// 获取validator.ValidationErrors类型的errors，也就是进行类型转换
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			// 表示不是validator.ValidatorErrors类型的错误，无法使用翻译器，直接返回
+			// 类型转换失败，表示不是validator.ValidatorErrors类型的错误，无法使用翻译器，直接返回
 			ResponseError(context, CodeInvalidParam)
 			return
 		} else {
@@ -105,5 +105,28 @@ func LoginHandler(context *gin.Context) {
 		"user_name":     user.Username,
 		"access_token":  user.AccessToken,
 		"refresh_token": user.RefreshToken,
+	})
+}
+
+func TestHandle(context *gin.Context) {
+	username, ok := context.Get(ContextUserIDKey)
+	if !ok {
+		ResponseError(context, CodeNeedLogin)
+		return
+	}
+	accessToken, ok := context.Get(ContextAccessToken)
+	if !ok {
+		ResponseError(context, CodeNeedLogin)
+		return
+	}
+	refreshToken, ok := context.Get(ContextRefreshToken)
+	if !ok {
+		ResponseError(context, CodeNeedLogin)
+		return
+	}
+	ResponseSuccess(context, gin.H{
+		"username":     username,
+		"accessToken":  accessToken,
+		"refreshToken": refreshToken,
 	})
 }

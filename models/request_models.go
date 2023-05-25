@@ -5,6 +5,7 @@ package models
 // @contact   : 1013269096@qq.com
 // -------------------------------------------
 
+// ParamsSignUp 接收注册时参数的结构体
 type ParamsSignUp struct {
 	Username   string `json:"username" binding:"required"`
 	Password   string `json:"password" binding:"required"`
@@ -12,6 +13,7 @@ type ParamsSignUp struct {
 	RePassword string `json:"repassword" binding:"required,eqfield=Password"`
 }
 
+// ParamsLogin 接收登录时参数的结构体
 type ParamsLogin struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`

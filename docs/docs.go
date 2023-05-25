@@ -19,6 +19,32 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/login": {
+            "post": {
+                "description": "处理用户登录流程",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户登录接口",
+                "parameters": [
+                    {
+                        "description": "用户登录所需参数",
+                        "name": "object",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/models.ParamsLogin"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/signup": {
             "post": {
                 "description": "用户注册",
@@ -47,6 +73,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.ParamsLogin": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ParamsSignUp": {
             "type": "object",
             "required": [

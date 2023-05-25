@@ -9,6 +9,7 @@ import (
 // @contact   : 1013269096@qq.com
 // -------------------------------------------
 
+// User 创建数据库表对应的model
 type User struct {
 	gorm.Model
 	UserID   int64  `gorm:"unique"`

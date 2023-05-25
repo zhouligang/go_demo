@@ -6,7 +6,8 @@ start_time: "2023-05-20"
 machine_id: 1
 
 auth:
-  jwt_expire: 7200 # 两个小时
+  jwt_access_token_expire: 7200 # 两个小时
+  jwt_refresh_token_expire: 604800 # 7天
 
 log:
   level: "debug"

@@ -48,7 +48,8 @@ type MySQLConfig struct {
 }
 
 type Auth struct {
-	JwtExpire int `mapstructure:"jwt_expire"`
+	JwtAccessTokenExpire  int `mapstructure:"jwt_access_token_expire"`
+	JwtRefreshTokenExpire int `mapstructure:"jwt_refresh_token_expire"`
 }
 
 // Init 使用viper初始化配置文件

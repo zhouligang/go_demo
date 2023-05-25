@@ -13,14 +13,15 @@ import (
 
 var node *sf.Node
 
-func SnowFlakeInit(startTime string, machindID int64) (err error) {
+// SnowFlakeInit 基于雪花算法生成用户ID
+func SnowFlakeInit(startTime string, machineID int64) (err error) {
 	var st time.Time
 	st, err = time.Parse("2006-01-02", startTime)
 	if err != nil {
 		return
 	}
 	sf.Epoch = st.UnixNano() / 1000000
-	node, err = sf.NewNode(machindID)
+	node, err = sf.NewNode(machineID)
 	return
 }
 
