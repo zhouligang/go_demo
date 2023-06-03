@@ -44,7 +44,7 @@ func SetupRoutes(mode string) *gin.Engine {
 	// 测试接口，在页面上显示当前登录的用户名
 	v1.GET("/test", controller.TestHandle)
 	// swagger接口文档
-	router.GET("/swagger/*ang", gs.WrapHandler(swaggerFiles.Handler))
+	router.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	router.NoRoute(func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
 			"msg": "404",
