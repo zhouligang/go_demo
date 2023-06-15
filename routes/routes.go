@@ -5,6 +5,8 @@ import (
 	"gin-web-scaffolding/middlewares"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
+
 	_ "gin-web-scaffolding/docs"
 
 	"github.com/gin-gonic/gin"
@@ -18,13 +20,22 @@ import (
 // -------------------------------------------
 
 // SetupRoutes 设置路由
-func SetupRoutes(mode string) *gin.Engine {
+func SetupRoutes(mode, AllowOrigins string) *gin.Engine {
 	if mode == gin.ReleaseMode {
 		gin.SetMode(gin.ReleaseMode) // 设置为release模式
 	}
+	//  配置跨域请求
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{AllowOrigins}
+	config.AllowMethods = []string{"GET", "POST"}
+	config.AllowHeaders = []string{"Origin"}
+	config.ExposeHeaders = []string{"Content-Length"}
+	config.AllowCredentials = true
+
 	router := gin.New()
 	//  使用自定义的三个中间件
 	router.Use(
+		cors.New(config),
 		middlewares.GinLogger(),
 		middlewares.GinRecovery(true),
 		middlewares.RateLimitMiddleware(2, 5),
