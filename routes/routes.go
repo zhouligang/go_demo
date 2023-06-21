@@ -20,14 +20,14 @@ import (
 // -------------------------------------------
 
 // SetupRoutes 设置路由
-func SetupRoutes(mode, AllowOrigins string) *gin.Engine {
+func SetupRoutes(mode string, AllowOrigins, AllowMethods []string) *gin.Engine {
 	if mode == gin.ReleaseMode {
 		gin.SetMode(gin.ReleaseMode) // 设置为release模式
 	}
 	//  配置跨域请求
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{AllowOrigins}
-	config.AllowMethods = []string{"GET", "POST"}
+	config.AllowOrigins = AllowOrigins
+	config.AllowMethods = AllowMethods
 	config.AllowHeaders = []string{"Origin"}
 	config.ExposeHeaders = []string{"Content-Length"}
 	config.AllowCredentials = true

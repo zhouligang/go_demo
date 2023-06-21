@@ -85,7 +85,7 @@ func main() {
 	}
 
 	// 注册路由
-	router := routes.SetupRoutes(settings.Conf.Mode, settings.Conf.AllowOrigins)
+	router := routes.SetupRoutes(settings.Conf.Mode, settings.Conf.AllowOrigins, settings.Conf.AllowMethods)
 
 	// 启动服务(优雅关机)
 	srv := &http.Server{

@@ -17,13 +17,14 @@ import (
 var Conf = new(AppConfig)
 
 type AppConfig struct {
-	Name         string `mapstructure:"name"` // mapstructure viper中使用的tag
-	Mode         string `mapstructure:"mode"`
-	Version      string `mapstructure:"version"`
-	Port         int    `mapstructure:"port"`
-	StartTime    string `mapstructure:"start_time"`
-	MachineID    int64  `mapstructure:"machine_id"`
-	AllowOrigins string `mapstructure:"allow_origins"`
+	Name         string   `mapstructure:"name"` // mapstructure viper中使用的tag
+	Mode         string   `mapstructure:"mode"`
+	Version      string   `mapstructure:"version"`
+	Port         int      `mapstructure:"port"`
+	StartTime    string   `mapstructure:"start_time"`
+	MachineID    int64    `mapstructure:"machine_id"`
+	AllowOrigins []string `mapstructure:"allow_origins"`
+	AllowMethods []string `mapstructure:"allow_methods"`
 
 	*LogConfig   `mapstructure:"log"`
 	*MySQLConfig `mapstructure:"mysql"`
